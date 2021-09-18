@@ -1,7 +1,6 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Redirect,
   Route,
   Switch,
 } from "react-router-dom";
@@ -9,7 +8,7 @@ import "./App.css";
 
 //routes
 import LoginPage from "./routes/login/login"
-import HomePage from "./routes/home/home"
+import LandingPage from "./routes/landing/landing"
 
 class App extends React.Component {
   constructor(props) {
@@ -25,11 +24,8 @@ class App extends React.Component {
           <Route path="/login">
             <LoginPage/>
           </Route>
-          <Route path="/home">
-            <HomePage/>
-          </Route>
           <Route path="/">
-            <Redirect to="/login" />
+            <LandingPage/>
           </Route>
         </Switch>
       </Router>
