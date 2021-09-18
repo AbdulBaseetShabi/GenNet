@@ -1,0 +1,21 @@
+#navigation-bar-container{
+    width: 100%;
+    background-color: black;
+    height: 100%;
+    border-top-right-radius: 7px;
+    color:#fffffe;
+}
+
+.navigation-item-container{
+    width: 100%;
+    padding: 2%;
+}
+
+.navigation-item{
+    padding: 1% 2%;
+}
+
+.navigation-item:hover{
+    background-color: grey;
+    cursor: pointer;
+}
