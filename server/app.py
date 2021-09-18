@@ -1,7 +1,26 @@
 from flask import Flask
 from helpers import *
+import psycopg2, os
+from dotenv import load_dotenv   #for python-dotenv method
+load_dotenv()   
 
+token = os.environ.get("cockroach")
+
+conn = psycopg2.connect(
+    database='crazy-walrus-3600.defaultdb',
+    user='db_admin',
+    password = token,
+    sslmode='require',
+    sslrootcert='certs/ca.crt',
+    sslkey='certs/client.maxroach.key',
+    sslcert='certs/client.maxroach.crt',
+    port=26257,
+    host='free-tier.gcp-us-central1.cockroachlabs.cloud'
+)
+
+print(conn.closed)
 app = Flask(__name__)
+
 
 @app.route("/")
 def warning():
