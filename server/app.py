@@ -2,7 +2,7 @@ from flask import Flask
 from helpers import *
 import psycopg2, os
 from dotenv import load_dotenv   #for python-dotenv method
-load_dotenv()   
+load_dotenv()
 
 token = os.environ.get("cockroach")
 
@@ -54,12 +54,12 @@ def edit_album():
 def leave_tree():
     pass
 
-@app.route("/user/viewperms", methods=["GET"])
+@app.route("/user/viewperms", methods=["GET", "POST"])
 @login_access
 def view_perms():
     pass
 
-@app.route("/user/viewalbum", methods=["GET"])
+@app.route("/user/viewalbum", methods=["GET", "POST"])
 @login_access
 def view_album():
     pass
