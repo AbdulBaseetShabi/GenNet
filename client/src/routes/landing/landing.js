@@ -7,6 +7,7 @@ import FamilyTree from "../familyTree/familyTree";
 import JournalView from "../journals/journal-view";
 import JournalList from "../journals/journals-list";
 import Notifications from "../notification/notification";
+import Account from "../account/account";
 
 //0 - Home; 1 - FamilyTreeView
 class Landing extends React.Component {
@@ -64,6 +65,7 @@ class Landing extends React.Component {
     } else if (current_path === 4) {
       view = <Notifications/>
     } else if (current_path === 5) {
+      view = <Account/>
     }
 
     return (
