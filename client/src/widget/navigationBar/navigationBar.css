@@ -19,3 +19,12 @@
     background-color: grey;
     cursor: pointer;
 }
+
+#log-out-button{
+    background-color: red;
+    margin: 0 2.5%;
+    width: 20%;
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+}
