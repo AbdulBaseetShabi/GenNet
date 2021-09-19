@@ -8,6 +8,7 @@ import "./App.css";
 
 //routes
 import LoginPage from "./routes/login/login"
+import SignUp from "./routes/signUp/signUp"
 import LandingPage from "./routes/landing/landing"
 
 class App extends React.Component {
@@ -20,7 +21,9 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Route path="/signup"></Route>
+          <Route path="/signUp"><SignUp/>
+            <SignUp/>
+          </Route>
           <Route path="/login">
             <LoginPage/>
           </Route>
