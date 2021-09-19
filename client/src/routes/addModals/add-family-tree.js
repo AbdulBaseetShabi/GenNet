@@ -10,7 +10,7 @@ function AddFamilyTree(props) {
         <div className="modal-options-content">
           <div className="input-group" style={inputContainer}>
             <div className="full-width">
-              <label>First Name</label>
+              <label>Family Name</label>
               <br />
               <input
                 type="text"

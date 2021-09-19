@@ -26,6 +26,7 @@ class Landing extends React.Component {
   }
 
   logOut() {
+    sessionStorage.removeItem("user")
     window.location.replace("/login");
   }
 

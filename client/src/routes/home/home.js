@@ -3,6 +3,7 @@ import "./home.css";
 
 import FamilyTreeCard from "../../widget/familyTreeCard/familyTreeCard";
 import AddFamilyTree from "../addModals/add-family-tree";
+import APICall from "../../services/api-connect";
 const inputContainer = { width: "80%", margin: "0 auto" };
 
 class Home extends React.Component {
@@ -10,6 +11,7 @@ class Home extends React.Component {
     super(props);
     this.state = {
       showModal: false,
+      familyTrees: [],
     };
     this.changeTreeData = this.changeTreeData.bind(this);
     this.openCloseModal = this.openCloseModal.bind(this);
@@ -19,6 +21,11 @@ class Home extends React.Component {
       title: "",
       description: "",
     };
+  }
+
+  componentDidMount() {
+    let user = JSON.parse(sessionStorage.getItem("user_2"));
+    this.setState({"familyTrees": user.FamilyTrees})
   }
 
   changeSearchValue(value) {
@@ -37,11 +44,14 @@ class Home extends React.Component {
   }
 
   createFamilyTree() {
-    let is_successful_call = true;
-    window.alert(JSON.stringify(this.new_family_tree));
-    if (is_successful_call) {
-      this.openCloseModal();
-    }
+    let user = JSON.parse(sessionStorage.getItem("user_2"));
+    let data = {...this.new_family_tree, admin: user["email"], members: [user["email"]], FamilyTrees: user.FamilyTrees}
+    APICall("/create/familytree", data, (res => {
+      if(res["status"] === 200){
+        window.alert("Successfully created family")
+        window.location.reload();
+      }
+    }))    
   }
 
   openCloseModal() {
@@ -49,8 +59,8 @@ class Home extends React.Component {
       if (prevState.showModal) {
         this.new_family_tree = {
           title: "",
-          description: ""
-        }
+          description: "",
+        };
         return { showModal: false };
       } else {
         return { showModal: true };
@@ -90,7 +100,11 @@ class Home extends React.Component {
             </div>
           </div>
         </div>
-        <button id="signup-button" className="full-width btn custom-button" onClick={(e)=> this.openCloseModal()}>
+        <button
+          id="signup-button"
+          className="full-width btn custom-button"
+          onClick={(e) => this.openCloseModal()}
+        >
           Create New Family Tree
         </button>
         <div id="home-search-result" className="full-width">

@@ -1,6 +1,8 @@
 import React from "react";
 import "./login.css";
-
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import APICall from "../../services/api-connect";
+import FirebaseApp from "../../services/firebase";
 const inputContainer = { width: "80%", margin: "0 auto" };
 
 class LogIn extends React.Component {
@@ -13,17 +15,45 @@ class LogIn extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (sessionStorage.getItem("user")) {
+      window.location.replace("/home");
+    }
+  }
+
   modifyLoginCredentials(credential, value) {
     this.credentials[credential] = value;
   }
 
-  logInEmailAndPassword() {
-    console.log(this.credentials);
-    window.location.replace("/home");
+  signUp() {
+    window.location.replace("/signUp");
   }
 
-  signUp() {
-    window.location.replace("/signUp"); 
+  logInEmailAndPassword() {
+    const auth = getAuth(FirebaseApp);
+    signInWithEmailAndPassword(
+      auth,
+      this.credentials["email"],
+      this.credentials["password"]
+    )
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        sessionStorage.setItem("user", JSON.stringify(user));
+        APICall("/login", { email: user.email }, (res) => {
+          if (res["status"] === 200) {
+            sessionStorage.setItem("user_2", JSON.stringify(res["response"]));
+            window.alert("User LoggedIN");
+            window.location.replace("/home");
+          }
+        });
+
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
   }
 
   render() {
@@ -70,8 +100,20 @@ class LogIn extends React.Component {
             />
           </div>
           <hr className="seperator" />
-          <button id="login-button" className="full-width outline-button btn custom-button" onClick={(e) => this.logInEmailAndPassword()}>Login</button>
-          <button id="signup-button" className="full-width btn custom-button" onClick={(e) => this.signUp()}>SignUp</button>
+          <button
+            id="login-button"
+            className="full-width outline-button btn custom-button"
+            onClick={(e) => this.logInEmailAndPassword()}
+          >
+            Login
+          </button>
+          <button
+            id="signup-button"
+            className="full-width btn custom-button"
+            onClick={(e) => this.signUp()}
+          >
+            SignUp
+          </button>
         </div>
       </div>
     );
