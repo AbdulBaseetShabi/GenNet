@@ -1,6 +1,7 @@
 from flask import Flask
 from helpers import *
 import psycopg2, os
+from twilio.rest import Client
 from dotenv import load_dotenv   #for python-dotenv method
 load_dotenv()
 
@@ -19,6 +20,20 @@ conn = psycopg2.connect(
 )
 
 print(conn.closed)
+
+# twilio sms
+
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
+message = client.messages \
+                .create(
+                     body="GenNet started, test message.",
+                     from_='+16479319450',
+                     to=os.environ['SERVER_NOTIFY']
+                 )
+print(message.sid)
+
 app = Flask(__name__)
 
 
