@@ -1,0 +1,20 @@
+.modal-options{
+    width: 100vw;
+    height:100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    z-index: 99;
+}
+
+.modal-options-content{
+    background-color: #fffffe;
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    padding: 10px;
+}
