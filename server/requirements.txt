@@ -1,0 +1,6 @@
+dnspython
+flask
+psycopg2-binary
+twilio
+python-dotenv
+pymongo
