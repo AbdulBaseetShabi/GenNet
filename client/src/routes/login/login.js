@@ -22,6 +22,10 @@ class LogIn extends React.Component {
     window.location.replace("/home");
   }
 
+  signUp() {
+    window.location.replace("/signUp"); 
+  }
+
   render() {
     return (
       <div
@@ -67,7 +71,7 @@ class LogIn extends React.Component {
           </div>
           <hr className="seperator" />
           <button id="login-button" className="full-width outline-button btn custom-button" onClick={(e) => this.logInEmailAndPassword()}>Login</button>
-          <button id="signup-button" className="full-width btn custom-button">SignUp</button>
+          <button id="signup-button" className="full-width btn custom-button" onClick={(e) => this.signUp()}>SignUp</button>
         </div>
       </div>
     );
