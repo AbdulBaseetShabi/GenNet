@@ -2,7 +2,7 @@ from flask import Flask
 from helpers import *
 import motor.motor_asyncio, asyncio, os
 from utils.mongo import Document
-from dotenv import load_dotenv  
+from dotenv import load_dotenv
 from twilio.rest import Client
 load_dotenv()
 
@@ -36,9 +36,11 @@ def login():
 
 @app.route("/register", methods=["POST"])
 def register():
+    first_name = request.args.get("firstname")
+    last_name = request.args.get("lastname")
     email = request.args.get("email")
-    password = request.args.get("password")
-    password_conf = request.args.get("password_conf")
+    phone = request.args.get("phone")
+    db.users.insert({"FirstName": firstname, "LastName": lastname, "email": email, "phone": phone, "family", "FamilyTrees": [], "Journals": []})
 
 @app.route("/admin/adduser", methods=["POST"])
 @admin_access
