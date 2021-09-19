@@ -73,7 +73,7 @@ class Home extends React.Component {
           <input
             type="text"
             placeholder="Looking for a family tree?"
-            style={{ width: "80%" }}
+            style={{ width: "70%", marginRight: "10px" }}
             onChange={(e) => {
               this.changeSearchValue(e.target.value);
             }}
