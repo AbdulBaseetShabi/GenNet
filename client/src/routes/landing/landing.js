@@ -6,6 +6,7 @@ import Home from "../home/home";
 import FamilyTree from "../familyTree/familyTree";
 import JournalView from "../journals/journal-view";
 import JournalList from "../journals/journals-list";
+import Notifications from "../notification/notification";
 
 //0 - Home; 1 - FamilyTreeView
 class Landing extends React.Component {
@@ -61,6 +62,7 @@ class Landing extends React.Component {
     } else if (current_path === 3) {
       view = <JournalView page_data={this.state.passed_data} />;
     } else if (current_path === 4) {
+      view = <Notifications/>
     } else if (current_path === 5) {
     }
 
