@@ -70,7 +70,7 @@ class FamilyTree extends React.Component {
         <div className="input-group mb-3" style={inputContainer}>
           <input
             type="text"
-            placeholder="What member are you looking for?"
+            placeholder="Find family member"
             style={{ width: "80%" }}
             onChange={(e) => {
               this.changeSearchValue(e.target.value);
