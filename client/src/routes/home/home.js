@@ -25,7 +25,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     let user = JSON.parse(sessionStorage.getItem("user_2"));
-    this.setState({"familyTrees": user.FamilyTrees})
+    this.setState({ familyTrees: user.FamilyTrees });
   }
 
   changeSearchValue(value) {
@@ -45,13 +45,19 @@ class Home extends React.Component {
 
   createFamilyTree() {
     let user = JSON.parse(sessionStorage.getItem("user_2"));
-    let data = {...this.new_family_tree, admin: user["email"], members: [user["email"]], FamilyTrees: user.FamilyTrees}
-    APICall("/create/familytree", data, (res => {
-      if(res["status"] === 200){
-        window.alert("Successfully created family")
+    let data = {
+      ...this.new_family_tree,
+      admin: user["email"],
+      members: [user["email"]],
+      FamilyTrees: user.FamilyTrees,
+    };
+    APICall("/create/familytree", data, (res) => {
+      if (res["status"] === 200) {
+        window.alert(JSON.stringify(res["response"]));
+        sessionStorage.setItem("user_2", JSON.stringify(res["response"]));
         window.location.reload();
       }
-    }))    
+    });
   }
 
   openCloseModal() {
@@ -108,10 +114,15 @@ class Home extends React.Component {
           Create New Family Tree
         </button>
         <div id="home-search-result" className="full-width">
-          <FamilyTreeCard
-            viewFamilyTree={this.props.viewFamilyTree}
-            viewJournal={this.props.viewJournal}
-          />
+          {this.state.familyTrees.map((tree) => {
+            return (
+              <FamilyTreeCard
+                viewFamilyTree={this.props.viewFamilyTree}
+                viewJournal={this.props.viewJournal}
+                tree_data={tree}
+              />
+            );
+          })}
         </div>
       </div>
     );

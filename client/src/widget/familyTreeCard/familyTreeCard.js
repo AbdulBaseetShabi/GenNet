@@ -5,15 +5,15 @@ function FamilyTreeCard(props) {
   return (
     <div className="family-tree-card row">
       <div style={{ width: "70%" }}>
-        <label className="full-width text-center">Description</label>
+        <label className="full-width text-center">{props.tree_data.familyName}</label>
         <hr className="seperator" />
-        <p>This is the description of</p>
+        <p>{props.tree_data.description}</p>
       </div>
       <div style={{ width: "30%", padding: "0 5%", borderLeft: "1px solid" }}>
         <button
           id="login-button"
           className="full-width outline-button btn custom-button"
-          onClick={(e) => props.viewFamilyTree()}
+          onClick={(e) => props.viewFamilyTree(props.tree_data.familyID)}
         >
           View
         </button>

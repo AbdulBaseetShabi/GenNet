@@ -25,6 +25,12 @@ class Landing extends React.Component {
     this.new_page_data = "";
   }
 
+  componentDidMount() {
+    if (!sessionStorage.getItem("user") || !sessionStorage.getItem("user_2")) {
+      window.location.replace("/login");
+    }
+  }
+
   logOut() {
     sessionStorage.removeItem("user")
     window.location.replace("/login");

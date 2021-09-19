@@ -16,7 +16,7 @@ class LogIn extends React.Component {
   }
 
   componentDidMount() {
-    if (sessionStorage.getItem("user")) {
+    if (sessionStorage.getItem("user") && sessionStorage.getItem("user_2")) {
       window.location.replace("/home");
     }
   }
