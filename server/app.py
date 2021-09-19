@@ -1,15 +1,16 @@
-from flask import Flask
+from flask import Flask, request
 from helpers import *
-import motor.motor_asyncio, asyncio, os
-from utils.mongo import Document
+import pymongo.mongo_client, os
+# from utils.mongo import Document
 from dotenv import load_dotenv
 from twilio.rest import Client
 load_dotenv()
 
-mongo = motor.motor_asyncio.AsyncIOMotorClient(os.environ['CONNECTION_STRING'])
+mongo = pymongo.mongo_client.MongoClient(os.environ['CONNECTION_STRING'])
 
 db = mongo.GenNet
-users = Document(db, "Users")
+users = db["Users"]
+trees = db["FamilyTrees"]
 
 # twilio sms
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
@@ -40,7 +41,21 @@ def register():
     last_name = request.args.get("lastname")
     email = request.args.get("email")
     phone = request.args.get("phone")
-    db.users.insert({"FirstName": firstname, "LastName": lastname, "email": email, "phone": phone, "family", "FamilyTrees": [], "Journals": []})
+    to_insert = {"FirstName": first_name, "LastName": last_name, "email": email, "phone": phone, "FamilyTrees": [], "Journals": []}
+    inserted = users.insert_one(to_insert)
+    return str(inserted.inserted_id)
+
+@app.route("/admin/createtree", methods=["POST"])
+@admin_access
+def create_tree():
+    family_name = request.args.get("familyname")
+    creator_first_name = request.args.get("creatorfirstname")
+    creator_first_name = request.args.get("creatorlastname")
+    admin = request.args.get("admin")
+    description = request.args.get("description")
+    to_insert = {"FamilyName": family_name, "Admin": admin, "Creator": {"FirstName": creator_first_name, "LastName": creator_last_name}, "Description": description, "Members": []}
+    inserted = trees.insert_one(to_insert)
+    return str(inserted.inserted_id)
 
 @app.route("/admin/adduser", methods=["POST"])
 @admin_access
