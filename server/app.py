@@ -1,26 +1,16 @@
 from flask import Flask
 from helpers import *
-import psycopg2, os
-from dotenv import load_dotenv   #for python-dotenv method
+import motor.motor_asyncio, asyncio, os
+from utils.mongo import Document
+from dotenv import load_dotenv  
 load_dotenv()
 
-token = os.environ.get("cockroach")
+mongo = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('connection_string'))
 
-conn = psycopg2.connect(
-    database='crazy-walrus-3600.defaultdb',
-    user='db_admin',
-    password = token,
-    sslmode='require',
-    sslrootcert='certs/ca.crt',
-    sslkey='certs/client.maxroach.key',
-    sslcert='certs/client.maxroach.crt',
-    port=26257,
-    host='free-tier.gcp-us-central1.cockroachlabs.cloud'
-)
+db = mongo.GenNet
+users = Document(db, "Users")
 
-print(conn.closed)
 app = Flask(__name__)
-
 
 @app.route("/", methods=["GET", "POST"])
 def warning():
