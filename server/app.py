@@ -60,8 +60,11 @@ def create_tree():
 @app.route("/admin/adduser", methods=["POST"])
 @admin_access
 def add_user():
-    email = request.args.get("email")
-    password = request.args.get("password")
+    family_name = request.args.get("FamilyName")
+    first_name = request.args.get("firstname")
+    last_name = request.args.get("lastname")
+    current = users.find({"FamilyName": family_name})["Members"]
+    users.update_one({"FamilyName": family_name}, {"$set": {"Members": current + {"FirstName": first_name, "LastName": lastname}}})
 
 @app.route("/admin/removeuser", methods=["POST"])
 @admin_access
