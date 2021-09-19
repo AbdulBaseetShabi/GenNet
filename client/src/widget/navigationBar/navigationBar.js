@@ -49,7 +49,7 @@ function NavigationBar(props) {
         </div>
         <div
           className="navigation-item row"
-          onClick={(e) => props.changePath(4)}
+          onClick={(e) => props.changePath(5)}
         >
           <div style={{ width: "10%", textAlign: "center" }}>
             <i className="fas fa-cog"></i>
