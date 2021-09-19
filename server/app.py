@@ -3,12 +3,25 @@ from helpers import *
 import motor.motor_asyncio, asyncio, os
 from utils.mongo import Document
 from dotenv import load_dotenv  
+from twilio.rest import Client
 load_dotenv()
 
-mongo = motor.motor_asyncio.AsyncIOMotorClient(os.environ.get('connection_string'))
+mongo = motor.motor_asyncio.AsyncIOMotorClient(os.environ['CONNECTION_STRING'])
 
 db = mongo.GenNet
 users = Document(db, "Users")
+
+# twilio sms
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
+message = client.messages \
+                .create(
+                     body="GenNet started, test message.",
+                     from_='+16479319450',
+                     to=os.environ['SERVER_NOTIFY']
+                 )
+print(message.sid)
 
 app = Flask(__name__)
 
