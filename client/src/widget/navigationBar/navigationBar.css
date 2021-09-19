@@ -1,9 +1,9 @@
 #navigation-bar-container{
     width: 100%;
-    background-color: black;
+    background-color: #0076FF;
     height: 100%;
-    border-top-right-radius: 7px;
     color:#fffffe;
+    padding-top: 16px;
 }
 
 .navigation-item-container{
@@ -12,16 +12,18 @@
 }
 
 .navigation-item{
-    padding: 1% 2%;
+    padding: 10% 2%;
+    background-color: #5643fd;
+    margin-bottom: 10px;
 }
 
 .navigation-item:hover{
-    background-color: grey;
+    background-color: #7649fe;
     cursor: pointer;
 }
 
 #log-out-button{
-    background-color: red;
+    background-color: #ba1e68;
     margin: 0 2.5%;
     width: 20%;
     position: absolute;
