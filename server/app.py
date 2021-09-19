@@ -19,7 +19,13 @@ conn = psycopg2.connect(
     host='free-tier.gcp-us-central1.cockroachlabs.cloud'
 )
 
-print(conn.closed)
+with conn.cursor() as cur:
+        cur.execute(
+            "CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY, name VARCHAR(65535), email VARCHAR(65535), family VARCHAR(65535), password_hash VARCHAR(65535));"
+        )
+    conn.commit()
+
+# print(conn.closed)
 
 # twilio sms
 
