@@ -11,7 +11,7 @@ load_dotenv()
 mongo = pymongo.mongo_client.MongoClient(os.environ['CONNECTION_STRING'])
 
 db = mongo['GenNet']
-users = db["Users"] 
+users = db["Users"]
 trees = db["FamilyTrees"]
 journals = db["Journal"]
 
@@ -52,10 +52,10 @@ def login():
         print(res)
     except Exception as e:
         return jsonify({'status': 400, 'response': str(e)})
-    return jsonify({'status': 200, 'response': res[0]})          
+    return jsonify({'status': 200, 'response': res[0]})
 
 @app.route("/register", methods=["POST"])
-def register(): 
+def register():
     try:
         print("Registering...")
         user_auth = request.get_json()
@@ -105,8 +105,11 @@ def add_user():
 @app.route("/admin/removeuser", methods=["POST"])
 @admin_access
 def remove_user():
-    email = request.args.get("email")
-    delete_trees = request.args.get("delete_trees")
+    family_name = request.args.get("FamilyName")
+    first_name = request.args.get("firstname")
+    last_name = request.args.get("lastname")
+    current = users.find({"FamilyName": family_name})["Members"]
+    users.update_one({"FamilyName": family_name}, {"$set": {"Members": current.remove({"FirstName": first_name, "LastName": lastname})}})
 
 @app.route("/admin/editalbum", methods=["POST"])
 @admin_access
