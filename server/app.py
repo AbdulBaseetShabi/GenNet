@@ -1,68 +1,78 @@
 from flask import Flask
 from helpers import *
-import psycopg2, os
-from dotenv import load_dotenv   #for python-dotenv method
-load_dotenv()   
+import motor.motor_asyncio, asyncio, os
+from utils.mongo import Document
+from dotenv import load_dotenv
+from twilio.rest import Client
+load_dotenv()
 
-token = os.environ.get("cockroach")
+mongo = motor.motor_asyncio.AsyncIOMotorClient(os.environ['CONNECTION_STRING'])
 
-conn = psycopg2.connect(
-    database='crazy-walrus-3600.defaultdb',
-    user='db_admin',
-    password = token,
-    sslmode='require',
-    sslrootcert='certs/ca.crt',
-    sslkey='certs/client.maxroach.key',
-    sslcert='certs/client.maxroach.crt',
-    port=26257,
-    host='free-tier.gcp-us-central1.cockroachlabs.cloud'
-)
+db = mongo.GenNet
+users = Document(db, "Users")
 
-print(conn.closed)
+# twilio sms
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
+message = client.messages \
+                .create(
+                     body="GenNet started, test message.",
+                     from_='+16479319450',
+                     to=os.environ['SERVER_NOTIFY']
+                 )
+print(message.sid)
+
 app = Flask(__name__)
 
-
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def warning():
     return "This is the API URL address. Use GenNet at [website]."
 
 @app.route("/login", methods=["POST"])
 def login():
-    pass
+    email = request.args.get("email")
+    password = request.args.get("password")
 
 @app.route("/register", methods=["POST"])
 def register():
-    pass
+    first_name = request.args.get("firstname")
+    last_name = request.args.get("lastname")
+    email = request.args.get("email")
+    phone = request.args.get("phone")
+    db.users.insert({"FirstName": firstname, "LastName": lastname, "email": email, "phone": phone, "family", "FamilyTrees": [], "Journals": []})
 
 @app.route("/admin/adduser", methods=["POST"])
 @admin_access
 def add_user():
-    pass
+    email = request.args.get("email")
+    password = request.args.get("password")
 
 @app.route("/admin/removeuser", methods=["POST"])
 @admin_access
 def remove_user():
-    pass
+    email = request.args.get("email")
+    delete_trees = request.args.get("delete_trees")
 
 @app.route("/admin/editalbum", methods=["POST"])
 @admin_access
 def edit_album():
-    pass
+    family = request.args.get("family")
 
 @app.route("/user/leavetree", methods=["POST"])
 @login_access
 def leave_tree():
-    pass
+    family = request.args.get("family")
 
-@app.route("/user/viewperms", methods=["GET"])
+@app.route("/user/viewperms", methods=["GET", "POST"])
 @login_access
 def view_perms():
-    pass
+    family = request.args.get("family")
 
-@app.route("/user/viewalbum", methods=["GET"])
+@app.route("/user/viewalbum", methods=["GET", "POST"])
 @login_access
 def view_album():
-    pass
+    family = request.args.get("family")
 
 @app.route("/user/deleteaccount", methods=["POST"])
 @login_access
@@ -74,4 +84,6 @@ def delete_account():
 @login_access
 def edit_account():
     # for changing settings/data
-    pass
+    # all-purpose function for accounts
+    key = request.args.get("key")
+    value = request.args.get("value")
